@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import pathlib
 import re
+import shutil
+import subprocess
 
 RULES = [
     (re.compile(r"\b\w+'(t|re|ve|ll|d)\b", re.I), "no contractions"),
@@ -16,7 +18,7 @@ RULES = [
     (re.compile(r"\b(simply|seamlessly|robust|powerful|comprehensive|leverage|crucial)\b|in order to|it is worth noting", re.I), "state the fact"),
     (re.compile(r"\*\*"), "no bold"),
 ]
-SKIP = {".git", ".waw", "dist", "fixtures", "simple-english", "__pycache__"}
+SKIP = {".git", ".waw", "dist", "fixtures", "simple-english", "__pycache__", ".lua", ".luarocks", ".install"}
 CODE_SPAN = re.compile(r"`[^`]*`")
 URL = re.compile(r"https?://\S+")
 
@@ -44,9 +46,20 @@ def _comment_lines(path: pathlib.Path, text: str):
             yield number, line[at + len(marker):]
 
 
+def _candidate_files(root: pathlib.Path) -> list[pathlib.Path]:
+    """Prefer the files that git tracks or would track. CI installs Lua tools into the checkout,
+    and their third-party comments are not ours to fix."""
+    if shutil.which("git"):
+        proc = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+                              cwd=root, capture_output=True, text=True)
+        if proc.returncode == 0:
+            return sorted(root / line for line in proc.stdout.splitlines() if line)
+    return sorted(root.rglob("*"))
+
+
 def scan(root: pathlib.Path) -> list[str]:
     hits: list[str] = []
-    for path in sorted(root.rglob("*")):
+    for path in _candidate_files(root):
         rel = path.relative_to(root)
         if not path.is_file() or set(rel.parts) & SKIP or rel.name == "LICENSE":
             continue
