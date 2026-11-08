@@ -1,0 +1,5 @@
+{
+  "runtime.version": "Lua 5.1",
+  "workspace.ignoreDir": [".waw", "dist", "tools/tests/fixtures"],
+  "diagnostics.globals": ["describe", "it", "it_async", "before_each", "pending", "wow"]
+}

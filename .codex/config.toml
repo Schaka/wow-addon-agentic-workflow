@@ -1,0 +1,7 @@
+[mcp_servers.wow-forever]
+command = "python3"
+args = ["tools/waw.py", "mcp"]
+
+[mcp_servers.codebase-memory-mcp]
+command = "codebase-memory-mcp"
+args = []

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "wow-forever": {
+      "command": "python3",
+      "args": [
+        "${workspaceFolder}/tools/waw.py",
+        "mcp"
+      ]
+    },
+    "codebase-memory-mcp": {
+      "command": "codebase-memory-mcp",
+      "args": []
+    }
+  }
+}

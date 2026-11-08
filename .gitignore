@@ -1,0 +1,5 @@
+.waw/
+dist/
+waw.local.toml
+__pycache__/
+*.pyc

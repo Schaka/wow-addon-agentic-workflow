@@ -1,0 +1,25 @@
+name: Verify
+on:
+  push:
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: leafo/gh-actions-lua@v10
+        with:
+          luaVersion: "5.1"
+      - uses: leafo/gh-actions-luarocks@v4
+      - run: luarocks install luacheck
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/waw
+          key: waw-${{ hashFiles('wow-target.toml') }}
+      - run: ./waw api sync
+      - run: ./waw verify
+      - run: python3 tools/tests/test_waw.py
+      - run: ./waw docs

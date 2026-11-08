@@ -1,0 +1,23 @@
+{
+ "oUF": {
+  "repo": "oUF-wow/oUF",
+  "branch": "master",
+  "default": true,
+  "license": "MIT",
+  "use": "Unit frame elements: health, power, cast bars, auras. You can adapt code if you keep the MIT notice."
+ },
+ "ElvUI": {
+  "repo": "tukui-org/ElvUI",
+  "branch": "main",
+  "default": true,
+  "license": "custom",
+  "use": "A full modern UI with unit frames and nameplates. Learn the approach only. Do not copy the code."
+ },
+ "DBM": {
+  "repo": "DeadlyBossMods/DeadlyBossMods",
+  "branch": "master",
+  "default": false,
+  "license": "custom",
+  "use": "Client detection and work inside addon restrictions. Learn the approach only. Do not copy the code."
+ }
+}

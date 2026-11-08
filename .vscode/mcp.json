@@ -1,0 +1,17 @@
+{
+  "servers": {
+    "wow-forever": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [
+        "${workspaceFolder}/tools/waw.py",
+        "mcp"
+      ]
+    },
+    "codebase-memory-mcp": {
+      "type": "stdio",
+      "command": "codebase-memory-mcp",
+      "args": []
+    }
+  }
+}

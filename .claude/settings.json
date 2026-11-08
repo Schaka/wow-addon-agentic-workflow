@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/tools/waw.py\" index session-hook", "timeout": 30 } ] }
+    ],
+    "SubagentStart": [
+      { "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/tools/waw.py\" index session-hook", "timeout": 30 } ] }
+    ],
+    "PreToolUse": [
+      { "matcher": "Read", "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/tools/waw.py\" index read-hook", "timeout": 5 } ] }
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+.waw/
+dist/
+tools/tests/fixtures/
+.agents/skills/simple-english/

@@ -1,0 +1,8 @@
+## Interface: 16001
+## Title: WAW Test Harness
+## Notes: Development only. Runs in-game tests and records Lua errors in SavedVariables.
+## SavedVariables: WawHarnessDB
+
+Manifest.lua
+Core.lua
+Specs.lua

@@ -1,0 +1,9 @@
+## Interface: 16001
+## Title: Example Addon
+## Notes: Shows the recommended structure for a WoW Forever addon.
+## Version: 0.1.0
+## X-License: AGPL-3.0-only
+## SavedVariables: ExampleAddonDB
+
+Logic.lua
+Core.lua
