@@ -6,11 +6,11 @@ product = "wowf"                 # Blizzard version-service product code for WoW
 game_type = "camelot"            # TOC game type. The client also accepts the alias "forever".
 interface = 16001                # The value for "## Interface:" in every addon TOC
 version = "1.60.1"
-build = 70888
+build = 70938
 ui_source_repo = "Gethe/wow-ui-source"
 ui_source_branch = "forever"
-ui_source_commit = "4cd0ab752a77164f654ccbca9d0c1fe8dafceebe"
-reviewed = "2026-11-10"          # The date that a person or agent last reviewed the API diff
+ui_source_commit = "bebcb6bf309cf41b41bd74f8ca651e6a105b2676"
+reviewed = "2026-11-14"          # The date that a person or agent last reviewed the API diff
 
 [retail]
 # The Midnight (Mainline) client. Used only to compare APIs. Forever is not retail.
