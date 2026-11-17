@@ -65,7 +65,8 @@
   "InterfaceOptions_AddCategory": {"new": "Settings.RegisterAddOnCategory", "note": "Removed. Use the Settings API.", "doc": "docs/migration/api-changes.md"},
   "InterfaceOptionsFrame_OpenToCategory": {"new": "Settings.OpenToCategory", "note": "Removed. Use the Settings API.", "doc": "docs/migration/api-changes.md"},
   "getglobal": {"new": null, "severity": "warning", "note": "Only a Blizzard deprecation shim provides it. Use _G[name].", "doc": "docs/migration/api-changes.md"},
-  "setglobal": {"new": null, "severity": "warning", "note": "Only a Blizzard deprecation shim provides it. Use _G[name] = value.", "doc": "docs/migration/api-changes.md"}
+  "setglobal": {"new": null, "severity": "warning", "note": "Only a Blizzard deprecation shim provides it. Use _G[name] = value.", "doc": "docs/migration/api-changes.md"},
+  "C_GameRules.SetForeverExperiencePreset": {"new": null, "note": "Removed in build 70959. No replacement exists.", "doc": "docs/migration/api-changes.md"}
  },
  "events": {
   "COMBAT_LOG_EVENT_UNFILTERED": {"new": null, "note": "The client restricts this event to the Blizzard UI. Registration from an addon is blocked.", "doc": "docs/migration/combat-log.md"},
