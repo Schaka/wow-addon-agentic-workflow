@@ -523,6 +523,13 @@ function M.new(api)
   function methods:GetWidth() return self.__width or 0 end
   function methods:GetHeight() return self.__height or 0 end
   function methods:GetSize() return self.__width or 0, self.__height or 0 end
+  -- The frame level that the code sets. Without one, a frame sits one level above its parent, like in the client.
+  function methods:SetFrameLevel(level) self.__level = level end
+  function methods:GetFrameLevel()
+    if self.__level then return self.__level end
+    local parent = self.__parent
+    return ( parent and parent:GetFrameLevel() or 0 ) + 1
+  end
   function methods:SetJustifyH(value) self.__justifyH = value end
   function methods:GetJustifyH() return self.__justifyH or "CENTER" end
   function methods:SetValue(v) self.__value = v end

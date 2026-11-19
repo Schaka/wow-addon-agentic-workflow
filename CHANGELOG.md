@@ -7,6 +7,7 @@
 3. A button in the simulator keeps its enabled state (`Enable`, `Disable`, `SetEnabled`, `IsEnabled`), and a check button keeps its checked state (`SetChecked`, `GetChecked`).
 4. A region in the simulator keeps its anchor points (`SetPoint`, `ClearAllPoints`, `GetPoint`, `GetNumPoints`) and its horizontal justification (`SetJustifyH`, `GetJustifyH`).
 5. A region in the simulator keeps the size that the code sets (`SetSize`, `SetWidth`, `SetHeight`, `GetWidth`, `GetHeight`, `GetSize`). A size from an XML file is not read.
+6. A frame in the simulator keeps its frame level (`SetFrameLevel`, `GetFrameLevel`). Without a level, a frame sits one level above its parent.
 
 ## 0.1.0, 2026-11-08
 

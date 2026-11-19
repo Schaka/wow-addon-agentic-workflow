@@ -130,4 +130,12 @@ check(width == 120 and height == 12 and region:GetWidth() == 120 and region:GetH
 region:SetWidth(50)
 region:SetHeight(7)
 check(region:GetWidth() == 50 and region:GetHeight() == 7, "SetWidth and SetHeight")
+
+-- A frame keeps its frame level. Without one it sits one level above its parent.
+local parentFrame = env.CreateFrame("Frame", nil, env.UIParent)
+parentFrame:SetFrameLevel(10)
+local childFrame = env.CreateFrame("Frame", nil, parentFrame)
+check(childFrame:GetFrameLevel() == 11, "a child sits one level above its parent")
+childFrame:SetFrameLevel(15)
+check(childFrame:GetFrameLevel() == 15, "SetFrameLevel")
 print("ok")
