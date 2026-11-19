@@ -63,6 +63,27 @@ second:ApplyAura({ isHarmful = true, dispelName = "Magic" })
 r, g, b = overlay:GetVertexColor()
 check(r == 0.2 and g == 0.6 and b == 1, "a magic debuff gets the color of Magic")
 
+-- The stealable filter shows a texture only for a stealable aura (or only for the others).
+env.Enum.CustomAuraButtonDispelTypeStealableFilter = { Stealable = 0, NotStealable = 1 }
+local glow = env.UIParent:CreateTexture()
+local fourth = sim:aura_button()
+fourth:AddDispelTypeTexture(glow, { style = 3, showWhenHelpful = true, showWhenHarmful = false, showWithoutDispelType = true, stealableFilter = 0 })
+env.DEBUFF_TYPE_MAGIC_COLOR = env.CreateColor(0.2, 0.6, 1)
+fourth:ApplyAura({ isHelpful = true, dispelName = "Magic", isStealable = true })
+check(glow:IsShown(), "a stealable buff shows the texture")
+fourth:ApplyAura({ isHelpful = true, dispelName = "Magic", isStealable = false })
+check(not glow:IsShown(), "a buff that is not stealable hides the texture")
+fourth:ApplyAura({ isHarmful = true, dispelName = "Magic", isStealable = true })
+check(not glow:IsShown(), "a debuff hides the texture with showWhenHarmful off")
+
+-- A custom color map replaces the color of the dispel type.
+local plain = env.UIParent:CreateTexture()
+local fifth = sim:aura_button()
+fifth:AddDispelTypeTexture(plain, { style = 3, showWhenHelpful = true, stealableFilter = 0, customDispelColorMap = { Magic = env.CreateColor(1, 1, 1) } })
+fifth:ApplyAura({ isHelpful = true, dispelName = "Magic", isStealable = true })
+r, g, b = plain:GetVertexColor()
+check(r == 1 and g == 1 and b == 1, "the color map wins over the color of the type")
+
 -- A style that the fake does not run raises an error.
 local third = sim:aura_button()
 third:AddDispelTypeTexture(env.UIParent:CreateTexture(), { style = 2 })

@@ -66,7 +66,7 @@ function M.new(sim, env, api, new_frame, parent)
     self.__dispel_textures[#self.__dispel_textures + 1] = { texture = texture, options = processed }
   end
 
-  -- ShouldShowDispelTypeForAura of Blizzard_CustomAuraButton.lua, without the stealable filter.
+  -- ShouldShowDispelTypeForAura of Blizzard_CustomAuraButton.lua.
   local function should_show(options, aura)
     if not aura then return false end
     if options.showAlways then return true end
@@ -74,7 +74,12 @@ function M.new(sim, env, api, new_frame, parent)
     if aura.isHelpful and not options.showWhenHelpful then return false end
     if aura.dispelName == nil and not options.showWithoutDispelType then return false end
     if options.stealableFilter ~= nil then
-      error("waw: the fake aura button does not run stealableFilter", 3)
+      local filter = env.Enum.CustomAuraButtonDispelTypeStealableFilter
+      if not filter then
+        error("waw: wow.aura_button needs Enum.CustomAuraButtonDispelTypeStealableFilter for stealableFilter", 3)
+      end
+      local required = (options.stealableFilter == filter.Stealable)
+      if (aura.isStealable == true) ~= required then return false end
     end
     return true
   end
@@ -96,14 +101,15 @@ function M.new(sim, env, api, new_frame, parent)
   end
 
   -- Give the aura data of one aura (a table like C_UnitAuras.GetAuraDataByAuraInstanceID returns it).
-  -- The fields that the dispel textures read are isHarmful, isHelpful and dispelName (nil for a physical effect).
+  -- The fields that the dispel textures read are isHarmful, isHelpful, isStealable and dispelName (nil for a physical effect).
   function button:ApplyAura(aura)
     for _, item in ipairs(self.__dispel_textures) do
       if should_show(item.options, aura) then
         apply_style(item.texture, item.options, aura)
         if item.options.customDispelColorMap then
           local color = item.options.customDispelColorMap[aura.dispelName or "None"]
-          if color then item.texture:SetVertexColor(color.r, color.g, color.b, color.a or 1) end
+          -- Blizzard calls GetRGBA on the entry, so it must be a color object.
+          if color then item.texture:SetVertexColor(color:GetRGBA()) end
         end
         item.texture:Show()
       else
