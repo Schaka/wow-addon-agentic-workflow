@@ -498,6 +498,26 @@ function M.new(api)
   function methods:IsEnabled() return self.__enabled ~= false end
   function methods:SetChecked(v) self.__checked = not not v end
   function methods:GetChecked() return self.__checked == true end
+  -- A region keeps its anchor points and the horizontal justification, so that a test can read the layout.
+  -- SetPoint(point [, relativeTo] [, relativePoint] [, x, y]): the relative frame defaults to the parent, the relative point
+  -- to the point, and the offsets to 0, like in the client.
+  function methods:ClearAllPoints() self.__points = {} end
+  function methods:SetPoint(point, relativeTo, relativePoint, x, y)
+    if type(relativeTo) == "number" then
+      relativeTo, relativePoint, x, y = nil, nil, relativeTo, relativePoint
+    elseif type(relativePoint) == "number" then
+      relativePoint, x, y = nil, relativePoint, x
+    end
+    self.__points = self.__points or {}
+    self.__points[#self.__points + 1] = { point, relativeTo or self.__parent, relativePoint or point, x or 0, y or 0 }
+  end
+  function methods:GetNumPoints() return self.__points and #self.__points or 0 end
+  function methods:GetPoint(index)
+    local anchor = self.__points and self.__points[index or 1]
+    if anchor then return anchor[1], anchor[2], anchor[3], anchor[4], anchor[5] end
+  end
+  function methods:SetJustifyH(value) self.__justifyH = value end
+  function methods:GetJustifyH() return self.__justifyH or "CENTER" end
   function methods:SetValue(v) self.__value = v end
   function methods:GetValue() return self.__value end
   function methods:SetMinMaxValues(a, b) self.__min, self.__max = a, b end
