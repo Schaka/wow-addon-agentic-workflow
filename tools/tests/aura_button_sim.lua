@@ -121,4 +121,13 @@ check(point == "TOP" and relativeTo == env.UIParent and relativePoint == "TOP" a
 check(region:GetJustifyH() == "CENTER", "default justification")
 region:SetJustifyH("LEFT")
 check(region:GetJustifyH() == "LEFT", "SetJustifyH")
+
+-- A region keeps the size that the code sets.
+check(region:GetWidth() == 0 and region:GetHeight() == 0, "a new region has size 0")
+region:SetSize(120, 12)
+local width, height = region:GetSize()
+check(width == 120 and height == 12 and region:GetWidth() == 120 and region:GetHeight() == 12, "SetSize")
+region:SetWidth(50)
+region:SetHeight(7)
+check(region:GetWidth() == 50 and region:GetHeight() == 7, "SetWidth and SetHeight")
 print("ok")

@@ -516,6 +516,13 @@ function M.new(api)
     local anchor = self.__points and self.__points[index or 1]
     if anchor then return anchor[1], anchor[2], anchor[3], anchor[4], anchor[5] end
   end
+  -- The size that the code sets. A size from an XML file is not read, so it stays 0 until the code sets it.
+  function methods:SetSize(width, height) self.__width, self.__height = width, height end
+  function methods:SetWidth(width) self.__width = width end
+  function methods:SetHeight(height) self.__height = height end
+  function methods:GetWidth() return self.__width or 0 end
+  function methods:GetHeight() return self.__height or 0 end
+  function methods:GetSize() return self.__width or 0, self.__height or 0 end
   function methods:SetJustifyH(value) self.__justifyH = value end
   function methods:GetJustifyH() return self.__justifyH or "CENTER" end
   function methods:SetValue(v) self.__value = v end

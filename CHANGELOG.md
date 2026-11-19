@@ -6,6 +6,7 @@
 2. The new helper `wow.aura_button()` is a fake aura button that runs the dispel type textures of the client.
 3. A button in the simulator keeps its enabled state (`Enable`, `Disable`, `SetEnabled`, `IsEnabled`), and a check button keeps its checked state (`SetChecked`, `GetChecked`).
 4. A region in the simulator keeps its anchor points (`SetPoint`, `ClearAllPoints`, `GetPoint`, `GetNumPoints`) and its horizontal justification (`SetJustifyH`, `GetJustifyH`).
+5. A region in the simulator keeps the size that the code sets (`SetSize`, `SetWidth`, `SetHeight`, `GetWidth`, `GetHeight`, `GetSize`). A size from an XML file is not read.
 
 ## 0.1.0, 2026-11-08
 
