@@ -466,6 +466,22 @@ function M.new(api)
   function methods:SetShown(v) self.__shown = not not v end
   function methods:IsShown() return self.__shown end
   function methods:IsVisible() return self.__shown end
+  -- A texture keeps what the code set, so that a test can read the result. The client keeps it too.
+  function methods:SetVertexColor(r, g, b, a) self.__vertex = { r, g, b, a == nil and 1 or a } end
+  function methods:GetVertexColor()
+    local c = self.__vertex or { 1, 1, 1, 1 }
+    return c[1], c[2], c[3], c[4]
+  end
+  function methods:SetAtlas(atlas) self.__atlas, self.__texture = atlas, nil end
+  function methods:GetAtlas() return self.__atlas end
+  function methods:SetTexture(file) self.__texture, self.__atlas = file, nil end
+  function methods:GetTexture() return self.__texture end
+  function methods:SetTexCoord(...) self.__texcoord = { ... } end
+  function methods:ResetTexCoord() self.__texcoord = nil end
+  function methods:GetTexCoord()
+    local c = self.__texcoord or { 0, 0, 0, 1, 1, 0, 1, 1 }
+    return unpack(c)
+  end
   function methods:GetName() return self.__name end
   function methods:GetParent() return self.__parent end
   function methods:GetObjectType() return self.__type end
@@ -743,6 +759,11 @@ function M.new(api)
     else
       rawset(ui_proxy(parts[1]), parts[2], fn)
     end
+  end
+
+  -- A button that works like the aura button of the client for the dispel type textures (see aurabutton.lua).
+  function sim:aura_button(parent)
+    return require("aurabutton").new(sim, env, api, new_frame, parent)
   end
 
   function sim:secret(value) return make_secret(value) end

@@ -67,6 +67,7 @@ Offline tests can use these helpers:
 | `wow.secret(value)` | Create a secret value |
 | `wow.secret_table(table)` | Create a secret table. Index, `#`, `pairs`, `ipairs` and `next` raise the error of the client. `type` still returns `table`, and `issecrettable` returns true. |
 | `wow.strict_compare(false)` | Turn off the rewrite of `name.field == true` for the addons that load next. The rewrite is on by default. |
+| `wow.aura_button()` | Create a fake aura button of a custom aura container. `AddDispelTypeTexture` keeps the texture, and `ApplyAura(auraData)` runs the dispel type logic of the client. |
 | `wow.saved.Name = value` | Set SavedVariables before login |
 | `wow.set_combat(true)` | Enter combat |
 
@@ -101,6 +102,7 @@ The simulator does not replace the client. Plain Lua cannot show some behavior:
 | `issecretvalue` of a secret table | The simulator returns false and `issecrettable` returns true. Check this in the client with the probe. |
 | Frames defined in XML | The simulator runs XML `Script` files but does not create the frames. |
 | A frame that the client fills, such as an `AuraContainer` | Not simulated. Fake only the methods that the code calls, with the documented names. |
+| The dispel type border of an aura button | `wow.aura_button()` runs it for the styles `Border`, `BorderWithIcon` and `PreserveAsset`. The test must set the color globals of the engine, such as `DEBUFF_TYPE_NONE_COLOR`. The fake does not draw icon, time or count. |
 | Taint and protected actions | Not simulated. |
 | FrameXML code | Not simulated. Use `wow.stub`. |
 | Real game data | Not simulated. Spell and item data come from fakes. |

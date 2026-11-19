@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+1. A texture in the simulator keeps its vertex color, atlas, file and texture coordinates.
+2. The new helper `wow.aura_button()` is a fake aura button that runs the dispel type textures of the client.
+
 ## 0.1.0, 2026-11-08
 
 The first release of wow-addon-agentic-workflow. A real port of ArenaLive from TBC Classic tested the template in the client.
