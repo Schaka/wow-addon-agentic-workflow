@@ -491,6 +491,13 @@ function M.new(api)
   function methods:GetAttribute(k) return self.__attrs[k] end
   function methods:SetText(v) self.__text = v end
   function methods:GetText() return self.__text end
+  -- A button is enabled and a check button is not checked until the code says so. Blizzard code reads both.
+  function methods:Enable() self.__enabled = true end
+  function methods:Disable() self.__enabled = false end
+  function methods:SetEnabled(v) self.__enabled = not not v end
+  function methods:IsEnabled() return self.__enabled ~= false end
+  function methods:SetChecked(v) self.__checked = not not v end
+  function methods:GetChecked() return self.__checked == true end
   function methods:SetValue(v) self.__value = v end
   function methods:GetValue() return self.__value end
   function methods:SetMinMaxValues(a, b) self.__min, self.__max = a, b end

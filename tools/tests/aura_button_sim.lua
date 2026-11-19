@@ -88,4 +88,18 @@ check(r == 1 and g == 1 and b == 1, "the color map wins over the color of the ty
 local third = sim:aura_button()
 third:AddDispelTypeTexture(env.UIParent:CreateTexture(), { style = 2 })
 raises(function() third:ApplyAura({ isHarmful = true, dispelName = "Magic" }) end, "does not run this dispel texture style")
+
+-- A button keeps its enabled state, and a check button keeps its checked state.
+local button = env.CreateFrame("CheckButton", nil, env.UIParent)
+check(button:IsEnabled() == true and button:GetChecked() == false, "a new button is enabled and not checked")
+button:Disable()
+check(button:IsEnabled() == false, "Disable")
+button:Enable()
+check(button:IsEnabled() == true, "Enable")
+button:SetEnabled(false)
+check(button:IsEnabled() == false, "SetEnabled")
+button:SetChecked(1)
+check(button:GetChecked() == true, "SetChecked")
+button:SetChecked(false)
+check(button:GetChecked() == false, "SetChecked false")
 print("ok")
