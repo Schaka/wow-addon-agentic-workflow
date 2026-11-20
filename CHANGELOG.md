@@ -4,10 +4,13 @@
 
 1. A texture in the simulator keeps its vertex color, atlas, file and texture coordinates.
 2. The new helper `wow.aura_button()` is a fake aura button that runs the dispel type textures of the client.
-3. A button in the simulator keeps its enabled state (`Enable`, `Disable`, `SetEnabled`, `IsEnabled`), and a check button keeps its checked state (`SetChecked`, `GetChecked`).
-4. A region in the simulator keeps its anchor points (`SetPoint`, `ClearAllPoints`, `GetPoint`, `GetNumPoints`) and its horizontal justification (`SetJustifyH`, `GetJustifyH`).
+3. A button in the simulator keeps its enabled state (`Enable`, `Disable`, `SetEnabled`, `IsEnabled`). A check button keeps its checked state (`SetChecked`, `GetChecked`).
+4. A region in the simulator keeps its anchor points (`SetPoint`, `ClearAllPoints`, `GetPoint`, `GetNumPoints`). It also keeps its horizontal justification (`SetJustifyH`, `GetJustifyH`).
 5. A region in the simulator keeps the size that the code sets (`SetSize`, `SetWidth`, `SetHeight`, `GetWidth`, `GetHeight`, `GetSize`). A size from an XML file is not read.
 6. A frame in the simulator keeps its frame level (`SetFrameLevel`, `GetFrameLevel`). Without a level, a frame sits one level above its parent.
+7. The new helper `wow.items()` holds item data for a test. It installs fakes for the item, equipment, bag and tooltip data functions, and it loads an item that is not cached after a request.
+8. The new helper `wow.tooltip(name)` is a tooltip that records its lines and runs the post calls of `TooltipDataProcessor`, like the client.
+9. The new helper `wow.addon_channel()` installs fakes for addon messages. It keeps the prefix, size, secret argument and lockdown rules, and it delivers messages from other players.
 
 ## 0.1.0, 2026-11-08
 
@@ -15,7 +18,7 @@ The first release of wow-addon-agentic-workflow. A real port of ArenaLive from T
 
 The template contains these parts:
 
-1. A pin of the game build in `wow-target.toml`, and a status command that compares it with the live build, the client and the UI source.
+1. A pin of the game build in `wow-target.toml`. A status command compares it with the live build, the client and the UI source.
 2. An MCP server and the `waw` command line for API questions on the pinned build.
 3. Static analysis for removed APIs, old combat log code, restricted events, secret comparisons, TOC and XML errors, and Lua 5.1 syntax.
 4. An offline simulator with secret values, XML frames, Blizzard templates, CVars and timers.
