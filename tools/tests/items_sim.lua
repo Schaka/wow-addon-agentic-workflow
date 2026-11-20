@@ -90,6 +90,10 @@ check(#lines == 4 and lines[2].left == "One-Hand" and lines[2].right == "Dagger"
 check(lines[4].left == "extra 1" and lines[4].g == 1 and tooltip:IsShown(), "post call line")
 tooltip:RefreshData()
 check(tooltip:NumLines() == 4 and tooltip:Lines()[4].left == "extra 2", "refresh rebuilds the lines")
+check(tooltip:GetProcessingTooltipInfo() == tooltip:GetPrimaryTooltipInfo(), "a primary info is the processing info")
+tooltip:AppendItemData({ type = 0, id = 2140, hyperlink = link, lines = { { leftText = "appended" } } })
+check(tooltip:NumLines() == 6 and tooltip:Lines()[5].left == "appended", "append keeps the lines")
+check(tooltip:GetProcessingTooltipInfo() ~= tooltip:GetPrimaryTooltipInfo(), "an appended info is not the primary info")
 check(tooltip:SetBagItem(0, 1) == false and not tooltip:IsShown(), "an empty slot hides the tooltip")
 
 -- Addon messages.

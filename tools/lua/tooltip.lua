@@ -12,7 +12,7 @@
 -- A test reads the result with tooltip:Lines(), which returns { { left =, right =, r =, g =, b = }, ... }.
 --
 -- What it does not do: comparison tooltips, money lines, textures in lines, the size of the tooltip, and the
--- pre calls and line calls of TooltipDataProcessor.
+-- pre calls and line calls of TooltipDataProcessor. AppendItemData stands in for an appended info.
 
 local M = {}
 
@@ -65,6 +65,8 @@ function M.new(sim, env, api, new_frame, name, parent)
   function tooltip:GetOwner() return self.__owner end
   function tooltip:IsForbidden() return false end
   function tooltip:IsOwned(owner) return self.__owner == owner end
+  function tooltip:GetPrimaryTooltipInfo() return self.infoList and self.infoList[1] end
+  function tooltip:GetProcessingTooltipInfo() return self.processingInfo end
   function tooltip:GetPrimaryTooltipData()
     local info = self.infoList and self.infoList[1]
     return info and info.tooltipData
@@ -82,12 +84,18 @@ function M.new(sim, env, api, new_frame, name, parent)
   local function process(info)
     local data = info.tooltipData or (info.getter and info.getter())
     if not data then
-      tooltip:Hide()
+      if not info.append then tooltip:Hide() end
       return false
     end
     info.tooltipData = data
-    tooltip.infoList = { info }
-    tooltip:ClearLines()
+    if info.append then
+      tooltip.infoList = tooltip.infoList or {}
+      table.insert(tooltip.infoList, info)
+    else
+      tooltip.infoList = { info }
+      tooltip:ClearLines()
+    end
+    tooltip.processingInfo = info
     for _, line in ipairs(data.lines or {}) do add(line.leftText, line.rightText) end
     for _, call in ipairs(processor.__post) do
       if call.kind == processor.AllTypes or call.kind == data.type then call.fn(tooltip, data) end
@@ -111,6 +119,9 @@ function M.new(sim, env, api, new_frame, name, parent)
   end
   -- Shows the data of any item. A test uses it for frames that the simulator does not have, such as a loot roll.
   function tooltip:SetItemData(data) return process({ tooltipData = data }) end
+  -- Appends the lines of more data without clearing, like an info with append = true (for example a comparison).
+  -- The post calls run again. Then tooltip:GetProcessingTooltipInfo() is not the primary info.
+  function tooltip:AppendItemData(data) return process({ tooltipData = data, append = true }) end
 
   function tooltip:RefreshData()
     local info = self.infoList and self.infoList[1]

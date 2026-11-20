@@ -69,7 +69,7 @@ Offline tests can use these helpers:
 | `wow.strict_compare(false)` | Turn off the rewrite of `name.field == true` for the addons that load next. The rewrite is on by default. |
 | `wow.aura_button()` | Create a fake aura button of a custom aura container. `AddDispelTypeTexture` keeps the texture, and `ApplyAura(auraData)` runs the dispel type logic of the client. |
 | `wow.items()` | Return an item store and install fakes for the item, equipment, bag and tooltip data functions. `define(id, fields)` adds an item, `equip(slot, id)` and `put(bag, slot, id)` place it. An item with `cached = false` loads after `C_Item.RequestLoadItemDataByID`. |
-| `wow.tooltip(name)` | Create a tooltip that records its lines. Its Set functions read the item store and run the post calls of `TooltipDataProcessor`. `Lines()` returns the lines, and `RefreshData()` builds them again. |
+| `wow.tooltip(name)` | Create a tooltip that records its lines. Its Set functions read the item store and run the post calls of `TooltipDataProcessor`. `Lines()` returns the lines, and `RefreshData()` builds them again. `AppendItemData(data)` adds an appended info, as a comparison does. |
 | `wow.addon_channel()` | Install fakes for addon messages. `sent` lists the sent messages, and `receive(prefix, text, chatType, sender)` delivers a message from another player. Set `lockdown` to block messages, and `own_name` to receive the echo of a group message. |
 | `wow.saved.Name = value` | Set SavedVariables before login |
 | `wow.set_combat(true)` | Enter combat |
