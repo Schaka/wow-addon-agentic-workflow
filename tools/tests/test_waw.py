@@ -130,6 +130,16 @@ class SimulatorAuraButton(unittest.TestCase):
         self.assertEqual(proc.stdout.strip(), "ok", proc.stdout + proc.stderr)
 
 
+@unittest.skipUnless(runner.find_lua(), "needs Lua 5.1 or LuaJIT")
+class SimulatorItemsTooltipChat(unittest.TestCase):
+    def test_items_tooltip_and_addon_channel(self):
+        """wow.items, wow.tooltip and wow.addon_channel follow the client rules that items_sim.lua names."""
+        env = dict(os.environ, LUA_PATH=f"{runner.LUA_DIR.as_posix()}/?.lua;;")
+        proc = subprocess.run([runner.find_lua()[0], str(TOOLS / "tests" / "items_sim.lua")],
+                              capture_output=True, text=True, env=env)
+        self.assertEqual(proc.stdout.strip(), "ok", proc.stdout + proc.stderr)
+
+
 class LoadOrder(unittest.TestCase):
     def test_texture_with_file_attribute_is_kept(self):
         """A Texture has a file attribute too. It is a template, not a Script or an Include."""

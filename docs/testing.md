@@ -68,6 +68,9 @@ Offline tests can use these helpers:
 | `wow.secret_table(table)` | Create a secret table. Index, `#`, `pairs`, `ipairs` and `next` raise the error of the client. `type` still returns `table`, and `issecrettable` returns true. |
 | `wow.strict_compare(false)` | Turn off the rewrite of `name.field == true` for the addons that load next. The rewrite is on by default. |
 | `wow.aura_button()` | Create a fake aura button of a custom aura container. `AddDispelTypeTexture` keeps the texture, and `ApplyAura(auraData)` runs the dispel type logic of the client. |
+| `wow.items()` | Return an item store and install fakes for the item, equipment, bag and tooltip data functions. `define(id, fields)` adds an item, `equip(slot, id)` and `put(bag, slot, id)` place it. An item with `cached = false` loads after `C_Item.RequestLoadItemDataByID`. |
+| `wow.tooltip(name)` | Create a tooltip that records its lines. Its Set functions read the item store and run the post calls of `TooltipDataProcessor`. `Lines()` returns the lines, and `RefreshData()` builds them again. |
+| `wow.addon_channel()` | Install fakes for addon messages. `sent` lists the sent messages, and `receive(prefix, text, chatType, sender)` delivers a message from another player. Set `lockdown` to block messages, and `own_name` to receive the echo of a group message. |
 | `wow.saved.Name = value` | Set SavedVariables before login |
 | `wow.set_combat(true)` | Enter combat |
 
@@ -84,9 +87,9 @@ wow.fire("UNIT_AURA", "target", {
 
 The simulator raises an error for these reads of a secret table: index, `#`, `pairs`, `ipairs` and `next`.
 
-A secret boolean cannot raise in `if x then` or in `x == true`, because plain Lua gives no hook for them. The loader closes the second gap in part. It rewrites the plain pattern `name.field == true` (also `== false`, `~= true` and `~= false`) in the addon source, so that it raises an error for a secret value. The rewrite skips strings and comments, keeps all line breaks, and works only if the token before the operand binds weaker than `==`. Turn it off with `wow.strict_compare(false)` before `wow.load`.
+A secret boolean cannot raise in `if x then` or in `x == true`, because plain Lua gives no hook for them. The loader closes the second gap in part. It rewrites the plain pattern `name.field == true` in the addon source, so that a secret value raises an error. The same applies to `== false`, `~= true` and `~= false`. The rewrite skips strings and comments and keeps all line breaks. If the token before the operand binds stronger than `==`, the rewrite does not apply. Turn it off with `wow.strict_compare(false)` before `wow.load`.
 
-The static rule `secret-bool-compare` of `./waw check` covers the same pattern in the source, also in code that no test runs. It uses the boolean fields of the payload of every event with a `Secret*` flag, and the boolean fields of the result of a function with a `Secret*` flag that the same file calls.
+The static rule `secret-bool-compare` of `./waw check` covers the same pattern in the source, also in code that no test runs. It uses the boolean fields of the payload of every event with a `Secret*` flag. It also uses the boolean fields of the result of each function with a `Secret*` flag that the same file calls.
 
 ### Limits of the simulator
 
@@ -105,7 +108,10 @@ The simulator does not replace the client. Plain Lua cannot show some behavior:
 | The dispel type border of an aura button | `wow.aura_button()` runs it for the styles `Border`, `BorderWithIcon` and `PreserveAsset`. The test must set the color globals of the engine, such as `DEBUFF_TYPE_NONE_COLOR`. The fake does not draw icon, time or count. |
 | Taint and protected actions | Not simulated. |
 | FrameXML code | Not simulated. Use `wow.stub`. |
-| Real game data | Not simulated. Spell and item data come from fakes. |
+| Real game data | Not simulated. Spell data comes from fakes. Item data comes from `wow.items()`, which knows only the items that the test defines. |
+| Item links | `wow.items()` writes the item ID and the level into the link. Enchants, gems, random suffixes and bonus IDs are not simulated. |
+| Tooltips | `wow.tooltip(name)` runs the post calls of `TooltipDataProcessor`. Comparison tooltips, money lines and the size of a tooltip are not simulated. |
+| Addon messages | `wow.addon_channel()` keeps the prefix, size, secret argument and lockdown rules. Throttling and the real roster are not simulated. |
 
 ## In-client tests
 

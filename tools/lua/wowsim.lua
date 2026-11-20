@@ -807,6 +807,23 @@ function M.new(api)
     return require("aurabutton").new(sim, env, api, new_frame, parent)
   end
 
+  -- Item data and fakes for the item, equipment, bag and tooltip data functions (see items.lua). One store per test.
+  function sim:items()
+    if not sim.__items then sim.__items = require("items").new(sim, env, api) end
+    return sim.__items
+  end
+
+  -- A tooltip that records its lines and runs the TooltipDataProcessor post calls (see tooltip.lua).
+  function sim:tooltip(name, parent)
+    return require("tooltip").new(sim, env, api, new_frame, name, parent)
+  end
+
+  -- Fakes for addon messages and a way to deliver messages from other players (see chat.lua). One channel per test.
+  function sim:addon_channel()
+    if not sim.__channel then sim.__channel = require("chat").new(sim, env, api) end
+    return sim.__channel
+  end
+
   function sim:secret(value) return make_secret(value) end
   -- A secret table. Index, length, pairs, ipairs and next raise the error of the client.
   function sim:secret_table(content) return make_secret_table(content or {}) end
