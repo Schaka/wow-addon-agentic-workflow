@@ -15,6 +15,8 @@ Read `docs/testing.md` for the list of helpers and the limits of the simulator.
 
 If an error names a missing fake, add one with `wow.stub`. Do not add other fakes. Put a fake that every test needs in `tests/fakes.lua`.
 
+For item data, item tooltips and addon messages, use the helpers `wow.items()`, `wow.tooltip(name)` and `wow.addon_channel()` instead of many single fakes.
+
 If a value can be secret, add a test that uses `wow.secret`. The simulator does not find `secret == 5`, so read each equality test by hand.
 
 Offline tests do not prove behavior that depends on taint, FrameXML or real game data. Use the `wow-test-client` skill for those cases.
