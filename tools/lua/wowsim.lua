@@ -465,7 +465,15 @@ function M.new(api)
   function methods:Hide() self.__shown = false end
   function methods:SetShown(v) self.__shown = not not v end
   function methods:IsShown() return self.__shown end
-  function methods:IsVisible() return self.__shown end
+  -- The client calls a frame visible only when the frame and all its parents are shown.
+  function methods:IsVisible()
+    local frame = self
+    while frame do
+      if not frame.__shown then return false end
+      frame = rawget(frame, "__parent")
+    end
+    return true
+  end
   -- A texture keeps what the code set, so that a test can read the result. The client keeps it too.
   function methods:SetVertexColor(r, g, b, a) self.__vertex = { r, g, b, a == nil and 1 or a } end
   function methods:GetVertexColor()
@@ -484,6 +492,7 @@ function M.new(api)
   end
   function methods:GetName() return self.__name end
   function methods:GetParent() return self.__parent end
+  function methods:SetParent(parent) self.__parent = parent end
   function methods:GetObjectType() return self.__type end
   function methods:SetID(id) self.__id = id end
   function methods:GetID() return self.__id or 0 end

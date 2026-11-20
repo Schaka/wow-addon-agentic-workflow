@@ -140,6 +140,16 @@ class SimulatorItemsTooltipChat(unittest.TestCase):
         self.assertEqual(proc.stdout.strip(), "ok", proc.stdout + proc.stderr)
 
 
+@unittest.skipUnless(runner.find_lua(), "needs Lua 5.1 or LuaJIT")
+class SimulatorFrames(unittest.TestCase):
+    def test_visibility_follows_parents(self):
+        """IsVisible is true only when the frame and all its parents are shown, as in the client."""
+        env = dict(os.environ, LUA_PATH=f"{runner.LUA_DIR.as_posix()}/?.lua;;")
+        proc = subprocess.run([runner.find_lua()[0], str(TOOLS / "tests" / "frames_sim.lua")],
+                              capture_output=True, text=True, env=env)
+        self.assertEqual(proc.stdout.strip(), "ok", proc.stdout + proc.stderr)
+
+
 class LoadOrder(unittest.TestCase):
     def test_texture_with_file_attribute_is_kept(self):
         """A Texture has a file attribute too. It is a template, not a Script or an Include."""

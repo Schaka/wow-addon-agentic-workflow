@@ -11,6 +11,7 @@
 7. The new helper `wow.items()` holds item data for a test. It installs fakes for the item, equipment, bag and tooltip data functions, and it loads an item that is not cached after a request.
 8. The new helper `wow.tooltip(name)` is a tooltip that records its lines and runs the post calls of `TooltipDataProcessor`, like the client.
 9. The new helper `wow.addon_channel()` installs fakes for addon messages. It keeps the prefix, size, secret argument and lockdown rules, and it delivers messages from other players.
+10. In the simulator, `IsVisible` is true only when the frame and all its parents are shown, as in the client. `SetParent` changes the parent.
 
 ## 0.1.0, 2026-11-08
 
